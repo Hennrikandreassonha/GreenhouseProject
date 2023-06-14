@@ -7,6 +7,7 @@ import json
 import time
 import smtplib
 from email.message import EmailMessage
+import schedule
 
 #For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
@@ -16,11 +17,7 @@ mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
 
-#For sending daily email update.
-senderEmail = "karinsvaxthus@gmail.com"
 
-emailPassword = 'xjlxvhcqqxyhpsvs'
-recieverEmail = 'henrik1995a@live.se'
 
 mqtt_client_id = "Djhonkensid"
 
@@ -34,6 +31,24 @@ mqtt_client.connect()
 
 tempSensor = dht.DHT11(Pin(27))
 photoResistor = machine.ADC(0)
+
+def send_email():
+    msg = EmailMessage()
+    msg.set_content('Temp is: 32°\nHumidity is: 40\nIt is quite sunny')
+
+    msg['Subject'] = 'Greenhouse update'
+    msg['From'] = ['sender-email']
+    msg['To'] = ['reciever-email']
+
+    # Send the message via our own SMTP server.
+    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    server.login(['sender-email'], ['sendEmail-password'])
+    server.send_message(msg)
+    server.quit()
+
+schedule.every().day.at('18:00').do(send_email)
+
+
 
 try:
     while True:
@@ -64,27 +79,11 @@ try:
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
         mqtt_client.publish(mqtt_publish_light, json_lightPayload)
 
+        schedule.every().day.at('18:00').do(send_email)
+
         time.sleep(15)
 
 except Exception as e:
     print(f'Failed to publish message: {e}')
 finally:
     mqtt_client.disconnect()
-
-def send_email():
-    senderEmail = "karinsvaxthus@gmail.com"
-    emailPassword = 'xjlxvhcqqxyhpsvs'
-    receiverEmail = 'henrik1995a@live.se'
-
-    msg = EmailMessage()
-    msg.set_content('Temp is: 32°\nHumidity is: 40\nIt is quite sunny')
-
-    msg['Subject'] = 'Greenhouse update'
-    msg['From'] = senderEmail
-    msg['To'] = receiverEmail
-
-    # Send the message via our own SMTP server.
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server.login(senderEmail, emailPassword)
-    server.send_message(msg)
-    server.quit()
