@@ -32,21 +32,6 @@ mqtt_client.connect()
 tempSensor = dht.DHT11(Pin(27))
 photoResistor = machine.ADC(0)
 
-def send_email(temp, humid, light):
-    msg = EmailMessage()
-    msg.set_content(f'Temp is: {temp}°\nHumidity is: {humid}\nLight level is: {light}')
-
-    msg['Subject'] = 'Greenhouse update'
-    msg['From'] = ['sender-email']
-    msg['To'] = ['reciever-email']
-
-    # Send the message via our own SMTP server.
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server.login(['sender-email'], ['sendEmail-password'])
-    server.send_message(msg)
-    server.quit()
-
-
 try:
     while True:
 
@@ -54,8 +39,6 @@ try:
         print(f'Publish light:{photoResistor.read_u16():.2f}')
         print(f'Publish temp:{tempSensor.temperature():.2f}')
         print(f'Publish humid:{tempSensor.humidity():.2f}')
-
-        schedule.every().day.at('18:00').do(lambda: send_email(tempSensor.temperature(), tempSensor.humidity(), photoResistor.read_u16()))
 
         # Create a dictionary to represent the JSON payload
         humidPayload = {
@@ -78,8 +61,9 @@ try:
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
         mqtt_client.publish(mqtt_publish_light, json_lightPayload)
 
+        #For sending update from greenhouse every day at 18.00
         schedule.run_pending()
-
+        schedule.every().day.at('18:00').do(lambda: send_email(tempSensor.temperature(), tempSensor.humidity(), photoResistor.read_u16()))
         time.sleep(15)
 
 except Exception as e:
