@@ -10,7 +10,7 @@ recieverEmail = 'henrik1995a@live.se'
 
 def send_email(recieverEmail, temp, humid, earthHumid, light):
     msg = EmailMessage()
-    msg.set_content(html_content(temp, humid, earthHumid, light))
+    msg.add_alternative(html_content(temp, humid, earthHumid, light), subtype='html')
 
     msg['Subject'] = 'Uppdatering från växthuset'
     msg['From'] = secrets['sender-email']

@@ -3,21 +3,18 @@ from machine import Pin
 import machine
 from math import sin
 from lib.umqttsimple import MQTTClient
+from Email import send_email
 import json
 import time
-import smtplib
-from email.message import EmailMessage
 import schedule
 
-#For the Mqtt protocol.
+# For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
 mqtt_username = "Djhonk"
 mqtt_password = "aio_WXdE48OwLFlJ43ptxmLTDcg2spuW"
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
-
-
 
 mqtt_client_id = "Djhonkensid"
 
@@ -61,9 +58,9 @@ try:
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
         mqtt_client.publish(mqtt_publish_light, json_lightPayload)
 
-        #For sending update from greenhouse every day at 18.00
+        # For sending update from greenhouse every day at 18.00
         schedule.run_pending()
-        schedule.every().day.at('18:00').do(lambda: send_email(tempSensor.temperature(), tempSensor.humidity(), photoResistor.read_u16()))
+        schedule.every().day.at('18:00').do(lambda: send_email('henrik1995a@live.se', '123', '123', '123', '123',))
         time.sleep(15)
 
 except Exception as e:
