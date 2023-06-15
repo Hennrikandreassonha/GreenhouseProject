@@ -31,9 +31,14 @@ mqtt_client.connect()
 tempSensor = dht.DHT11(Pin(27))
 photoResistor = machine.ADC(0)
 
+button = machine.Pin(1)
+
 try:
     while True:
 
+        if button.value() == 1:
+            print("Button was pushed!")
+        
         tempSensor.measure()
         print(f'Publish light:{photoResistor.read_u16():.2f}')
         print(f'Publish temp:{tempSensor.temperature():.2f}')
