@@ -26,6 +26,7 @@ mqtt_client = MQTTClient(
 
 mqtt_client.connect()
 
+# Defining sensors
 tempSensor = dht.DHT11(Pin(27))
 photoResistor = machine.ADC(0)
 

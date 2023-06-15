@@ -2,6 +2,9 @@ import smtplib
 from email.message import EmailMessage
 from secrets import secrets
 
+# This file contains code that is used for sending email
+# I did not want to put all the ugly hmtl code in main.py
+
 senderEmail = "karinsvaxthus@gmail.com"
 
 emailPassword = 'xjlxvhcqqxyhpsvs'
