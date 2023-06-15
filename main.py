@@ -4,14 +4,15 @@ import machine
 from math import sin
 from lib.umqttsimple import MQTTClient
 from Email import send_email
+from secrets import secrets
 import json
 import time
 import schedule
 
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
-mqtt_username = "Djhonk"
-mqtt_password = "aio_WXdE48OwLFlJ43ptxmLTDcg2spuW"
+mqtt_username = secrets['mqtt-username']
+mqtt_password = secrets['mqtt-password']
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
