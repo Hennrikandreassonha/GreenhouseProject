@@ -5,11 +5,8 @@ from secrets import secrets
 # This file contains code that is used for sending email
 # I did not want to put all the ugly hmtl code in main.py
 
-senderEmail = "karinsvaxthus@gmail.com"
-
-emailPassword = 'xjlxvhcqqxyhpsvs'
-recieverEmail = 'henrik1995a@live.se'
-
+def gay():
+    return ('hi')
 
 def send_email(recieverEmail, temp, humid, earthHumid, light):
     msg = EmailMessage()
@@ -79,5 +76,3 @@ def html_content(temp, humid, earthHumid, light):
 
     </html>
         '''
-
-send_email('henrik1995a@live.se', '123', '123', '123','123',)

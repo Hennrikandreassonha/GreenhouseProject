@@ -3,12 +3,14 @@ from machine import Pin
 import machine
 from math import sin
 from lib.umqttsimple import MQTTClient
-from Email import send_email
+from SendEmail import gay
 from secrets import secrets
 import json
 import time
 import schedule
 
+
+gay()
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
 mqtt_username = secrets['mqtt-username']
@@ -67,7 +69,9 @@ try:
 
         # For sending update from greenhouse every day at 18.00
         schedule.run_pending()
-        schedule.every().day.at('18:00').do(lambda: send_email('henrik1995a@live.se', '123', '123', '123', '123',))
+        schedule.every().day.at('18:00').do(lambda: send_email('henrik1995a@live.se', '123', '123', '123', '123'))
+
+        send_email('henrik1995a@live.se', '123', '123', '123', '123')
         time.sleep(15)
 
 except Exception as e:
