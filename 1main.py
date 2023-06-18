@@ -38,7 +38,7 @@ try:
     while True:
         
         tempSensor.measure()
-        tempValue = tempSensor.temperatue()
+        tempValue = tempSensor.temperature()
         humidValue = tempSensor.humidity()
         lightValue = photoResistor.read_u16()
 
@@ -54,9 +54,9 @@ try:
         if button.value() == 1:
             print("Button was pushed!")
         
-        print(f'Publish light:{tempValue}')
-        print(f'Publish temp:{humidValue}')
-        print(f'Publish humid:{lightValue}')
+        print(f'Publish light:{lightValue}')
+        print(f'Publish temp:{tempValue}')
+        print(f'Publish humid:{humidValue}')
 
         # Create a dictionary to represent the JSON payload
         tempPayload = {

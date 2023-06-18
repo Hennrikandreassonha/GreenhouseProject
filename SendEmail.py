@@ -4,7 +4,7 @@ from secrets import secrets
 # Email details
 sender_email = secrets['sender-email']
 sender_app_password = secrets['sendEmail-password']
-email_subject = '    🌞Uppdatering från växthus🌞'
+email_subject = '🌞Uppdatering från växthus🌞'
 
 # Define the email content with a green background'
 
