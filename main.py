@@ -33,44 +33,47 @@ tempSensor = dht.DHT11(Pin(27))
 photoResistor = machine.ADC(0)
 
 button = machine.Pin(1)
-emailSent = False
+previousDay = ""
 
 try:
     while True:
+        
+        tempSensor.measure()
+        tempValue = tempSensor.temperatue()
+        humidValue = tempSensor.humidity()
+        lightValue = photoResistor.read_u16()
 
         currentDate = time.localtime()
+        print(currentDate)
+        hour = currentDate[3] + 2
         day = currentDate[2]
-        hour = currentDate[3]
 
-        if hour == 18 and not emailSent:
-            send_email("henrik1995a@live.se", "123","123","123","123")
-            emailSent = True
+        if hour == 11 and day != previousDay:
+          send_email("henrik1995a@live.se", tempValue, humidValue, 123, lightValue)
+          previousDay = day
 
         if button.value() == 1:
             print("Button was pushed!")
         
-        tempSensor.measure()
-        print(f'Publish light:{photoResistor.read_u16():.2f}')
-        print(f'Publish temp:{tempSensor.temperature():.2f}')
-        print(f'Publish humid:{tempSensor.humidity():.2f}')
+        print(f'Publish light:{tempValue}')
+        print(f'Publish temp:{humidValue}')
+        print(f'Publish humid:{lightValue}')
 
         # Create a dictionary to represent the JSON payload
-        humidPayload = {
-            "humidity": tempSensor.humidity()
-        }
         tempPayload = {
-            "temp": tempSensor.temperature()
+            "temp": tempValue
+        }
+        humidPayload = {
+            "humidity": humidValue
         }
         lightPayload = {
-            "light": photoResistor.read_u16()
+            "light": lightValue
         }
 
-        # Convert the payload dictionary to a JSON string
         json_humidPayload = json.dumps(humidPayload)
         json_tempPayload = json.dumps(tempPayload)
         json_lightPayload = json.dumps(lightPayload)
 
-        # Publish the JSON payload
         mqtt_client.publish(mqtt_publish_humid, json_humidPayload)
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
         mqtt_client.publish(mqtt_publish_light, json_lightPayload)

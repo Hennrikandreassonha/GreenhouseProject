@@ -56,7 +56,7 @@ def email_content(temp, humidity, soilmoisture, light):
 
 
 def send_email(reciever, temp, humidity, soilmoisture, light):
-
+    
     smtp = lib.umail.SMTP('smtp.gmail.com', 465, ssl=True)
     smtp.login(sender_email, sender_app_password)
     smtp.to(reciever)
