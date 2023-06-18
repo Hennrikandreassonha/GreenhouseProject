@@ -34,9 +34,35 @@ photoResistor = machine.ADC(0)
 button = machine.Pin(1)
 previousDay = ""
 
+button_pin = Pin(14, Pin.IN, Pin.PULL_DOWN)
+lamp = Pin(15, mode=Pin.OUT)
+
+toggle = False
+lastValue = 0
+
+def change_screen_RGB(pin):
+    global lastValue, toggle
+    if button_pin.value() != 0 and not lastValue == 1:
+        print("Toggled")
+        toggle = True
+        lastValue = button_pin.value()
+
+button_pin.irq(trigger=Pin.IRQ_RISING, handler=change_screen_RGB)
+
 try:
     while True:
         
+        #Toggla RGB skärmen med en loop av något slag.
+        if toggle:
+
+            if(lamp.value() == 1):
+                lamp.off()
+            else:
+                lamp.on()
+
+        toggle = False
+        lastValue = 0
+
         tempSensor.measure()
         tempValue = tempSensor.temperature()
         humidValue = tempSensor.humidity()
