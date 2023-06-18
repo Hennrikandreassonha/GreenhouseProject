@@ -1,16 +1,15 @@
 import dht
 from machine import Pin
 import machine
-from math import sin
 from lib.umqttsimple import MQTTClient
-from SendEmail import gay
+from SendEmail import send_email
 from secrets import secrets
 import json
 import time
-import schedule
+import urequests
 
+# import schedule
 
-gay()
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
 mqtt_username = secrets['mqtt-username']
@@ -34,9 +33,18 @@ tempSensor = dht.DHT11(Pin(27))
 photoResistor = machine.ADC(0)
 
 button = machine.Pin(1)
+emailSent = False
 
 try:
     while True:
+
+        currentDate = time.localtime()
+        day = currentDate[2]
+        hour = currentDate[3]
+
+        if hour == 18 and not emailSent:
+            send_email("henrik1995a@live.se", "123","123","123","123")
+            emailSent = True
 
         if button.value() == 1:
             print("Button was pushed!")
@@ -67,11 +75,6 @@ try:
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
         mqtt_client.publish(mqtt_publish_light, json_lightPayload)
 
-        # For sending update from greenhouse every day at 18.00
-        schedule.run_pending()
-        schedule.every().day.at('18:00').do(lambda: send_email('henrik1995a@live.se', '123', '123', '123', '123'))
-
-        send_email('henrik1995a@live.se', '123', '123', '123', '123')
         time.sleep(15)
 
 except Exception as e:
