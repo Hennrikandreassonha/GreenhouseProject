@@ -66,6 +66,3 @@ def send_email(reciever, temp, humidity, soilmoisture, light):
     smtp.write(email_content(temp, humidity, soilmoisture, light))
     smtp.send()
     smtp.quit()
-
-
-send_email("henrik1995a@live.se", 123, 123, 123, 123)

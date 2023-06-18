@@ -6,7 +6,6 @@ from SendEmail import send_email
 from secrets import secrets
 import json
 import time
-import urequests
 
 # import schedule
 
