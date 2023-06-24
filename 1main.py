@@ -12,8 +12,8 @@ import time
 
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
-mqtt_username = secrets['mqtt-username']
-mqtt_password = secrets['mqtt-password']
+mqtt_username = secrets['åsbräcka-ssid']
+mqtt_password = secrets['åsbräcka-pw']
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
