@@ -2,12 +2,13 @@ import dht
 from machine import Pin
 import machine
 from lib.umqttsimple import MQTTClient
-from SendEmail import send_email
+from lib.seesaw import Seesaw
+from lib.stemma_soil_sensor import StemmaSoilSensor
+from lib.tsl2591 import TSL2591
+from lib.SendEmail import send_email
 from secrets import secrets
 import json
 import time
-
-# import schedule
 
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
@@ -16,6 +17,7 @@ mqtt_password = secrets['mqtt-password']
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
+mqtt_publish_groundmoisture = "Djhonk/feeds/Groundmoisture"
 
 mqtt_client_id = "Djhonkensid"
 
@@ -28,61 +30,49 @@ mqtt_client = MQTTClient(
 mqtt_client.connect()
 
 # Defining sensors
+
+#DHT air temp and moisture 
 tempSensor = dht.DHT11(Pin(27))
-photoResistor = machine.ADC(0)
 
-button = machine.Pin(1)
+i2c = machine.I2C(0, sda=machine.Pin(0), scl=machine.Pin(1), freq=400000)
+
+#Light sensor
+lightsensor = TSL2591(i2c)
+
+#Ground Moist sensor
+moistsensor = StemmaSoilSensor(i2c)
+
 previousDay = ""
-
-button_pin = Pin(14, Pin.IN, Pin.PULL_DOWN)
-lamp = Pin(15, mode=Pin.OUT)
-
-toggle = False
-lastValue = 0
-
-def change_screen_RGB(pin):
-    global lastValue, toggle
-    if button_pin.value() != 0 and not lastValue == 1:
-        print("Toggled")
-        toggle = True
-        lastValue = button_pin.value()
-
-button_pin.irq(trigger=Pin.IRQ_RISING, handler=change_screen_RGB)
 
 try:
     while True:
+        #Get light value
+        lux = lightsensor.get_lux()
+        roundedlight = round(lux, 2)
         
-        #Toggla RGB skärmen med en loop av något slag.
-        if toggle:
+        #Get ground moist and temp
+        groundmoisture = moistsensor.get_moisture()
+        groundtemperature = moistsensor.get_temp()
 
-            if(lamp.value() == 1):
-                lamp.off()
-            else:
-                lamp.on()
-
-        toggle = False
-        lastValue = 0
-
+        #Get temp and moisture in iar
         tempSensor.measure()
         tempValue = tempSensor.temperature()
         humidValue = tempSensor.humidity()
-        lightValue = photoResistor.read_u16()
-
+        
+        #For sending emails
         currentDate = time.localtime()
         print(currentDate)
         hour = currentDate[3] + 2
         day = currentDate[2]
 
-        if hour == 11 and day != previousDay:
-          send_email("henrik1995a@live.se", tempValue, humidValue, 123, lightValue)
+        if hour == 21 and day != previousDay:
+          send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
           previousDay = day
-
-        if button.value() == 1:
-            print("Button was pushed!")
         
-        print(f'Publish light:{lightValue}')
+        print(f'Publish light:{roundedlight}')
         print(f'Publish temp:{tempValue}')
         print(f'Publish humid:{humidValue}')
+        print(f'Publish ground moist:{groundmoisture}')
 
         # Create a dictionary to represent the JSON payload
         tempPayload = {
@@ -92,16 +82,21 @@ try:
             "humidity": humidValue
         }
         lightPayload = {
-            "light": lightValue
+            "light": roundedlight
+        }
+        groundmoisturePayload = {
+            "groundmoisture": groundmoisture
         }
 
         json_humidPayload = json.dumps(humidPayload)
         json_tempPayload = json.dumps(tempPayload)
         json_lightPayload = json.dumps(lightPayload)
+        json_groundmoisture = json.dumps(groundmoisture)
 
         mqtt_client.publish(mqtt_publish_humid, json_humidPayload)
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
         mqtt_client.publish(mqtt_publish_light, json_lightPayload)
+        mqtt_client.publish(mqtt_publish_groundmoisture, json_groundmoisture)
 
         time.sleep(15)
 
