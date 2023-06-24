@@ -1,6 +1,6 @@
 secrets = {
     'åsbräcka-ssid' : 'Lennart',
-    'åsbräcka-pw': 'Bastu2022'
+    'åsbräcka-pw': 'Bastu2022',
     'wifi-ssid' : 'Wu-Tang LAN',
     'wifi-password' : 'MeeHefEntEd6',
     'sender-email' : 'karinsvaxthus@gmail.com',
