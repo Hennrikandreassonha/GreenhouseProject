@@ -5,7 +5,7 @@ import ntptime
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect(secrets['wifi-ssid'], secrets['wifi-password'])
+wlan.connect('Lennart', 'bastu2022')
 while wlan.isconnected() == False:
     print('Waiting for connection...')
     time.sleep(1)

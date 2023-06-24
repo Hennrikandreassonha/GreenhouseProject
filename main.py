@@ -10,10 +10,12 @@ from secrets import secrets
 import json
 import time
 
+
+
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
-mqtt_username = secrets['åsbräcka-ssid']
-mqtt_password = secrets['åsbräcka-pw']
+mqtt_username = 'Djhonk'
+mqtt_password = 'aio_WXdE48OwLFlJ43ptxmLTDcg2spuW'
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
@@ -64,8 +66,16 @@ try:
         print(currentDate)
         hour = currentDate[3] + 2
         day = currentDate[2]
-
-        if hour == 21 and day != previousDay:
+        print('Hour:')
+        print(hour)
+        #Sending email at 08.00 and 18.00
+        if hour == 18 and day != previousDay:
+          send_email("karin.eh@hotmail.se", tempValue, humidValue, groundmoisture, roundedlight)
+          previousDay = day
+          send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
+          previousDay = day
+          send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
+          previousDay = day
           send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
           previousDay = day
         
@@ -91,7 +101,7 @@ try:
         json_humidPayload = json.dumps(humidPayload)
         json_tempPayload = json.dumps(tempPayload)
         json_lightPayload = json.dumps(lightPayload)
-        json_groundmoisture = json.dumps(groundmoisture)
+        json_groundmoisture = json.dumps(groundmoisturePayload)
 
         mqtt_client.publish(mqtt_publish_humid, json_humidPayload)
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
