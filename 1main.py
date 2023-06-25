@@ -12,8 +12,6 @@ import time
 
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
-mqtt_username = secrets['mqtt-username']
-mqtt_password = secrets['mqtt-password']
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
@@ -24,8 +22,8 @@ mqtt_client_id = "Djhonkensid"
 mqtt_client = MQTTClient(
     client_id=mqtt_client_id,
     server=mqtt_host,
-    user=mqtt_username,
-    password=mqtt_password)
+    user=secrets['mqtt-username'],
+    password=secrets['mqtt-password'])
 
 mqtt_client.connect()
 
@@ -33,12 +31,9 @@ mqtt_client.connect()
 
 #DHT air temp and moisture 
 tempSensor = dht.DHT11(Pin(27))
-
 i2c = machine.I2C(0, sda=machine.Pin(0), scl=machine.Pin(1), freq=400000)
-
 #Light sensor
 lightsensor = TSL2591(i2c)
-
 #Ground Moist sensor
 moistsensor = StemmaSoilSensor(i2c)
 
@@ -65,7 +60,8 @@ try:
         hour = currentDate[3] + 2
         day = currentDate[2]
 
-        if hour == 21 and day != previousDay:
+        print(hour)
+        if hour == 9 and day != previousDay:
           send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
           previousDay = day
         
@@ -91,12 +87,12 @@ try:
         json_humidPayload = json.dumps(humidPayload)
         json_tempPayload = json.dumps(tempPayload)
         json_lightPayload = json.dumps(lightPayload)
-        json_groundmoisture = json.dumps(groundmoisture)
+        json_groundmoisturePayload = json.dumps(groundmoisturePayload)
 
         mqtt_client.publish(mqtt_publish_humid, json_humidPayload)
         mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
         mqtt_client.publish(mqtt_publish_light, json_lightPayload)
-        mqtt_client.publish(mqtt_publish_groundmoisture, json_groundmoisture)
+        mqtt_client.publish(mqtt_publish_groundmoisture, json_groundmoisturePayload)
 
         time.sleep(15)
 
