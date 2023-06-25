@@ -10,8 +10,6 @@ from secrets import secrets
 import json
 import time
 
-
-
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
 mqtt_username = 'Djhonk'
@@ -107,6 +105,7 @@ try:
             send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
             previousDay = day
             send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
+
             previousDay = day
         
         print(f'Publish light:{roundedlight}')
