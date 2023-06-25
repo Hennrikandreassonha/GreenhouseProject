@@ -44,7 +44,7 @@ moistsensor = StemmaSoilSensor(i2c)
 previousDay = ""
 
 try:
-    while True:
+      while True:
         #Get light value
         lux = lightsensor.get_lux()
         roundedlight = round(lux, 2)
@@ -65,16 +65,47 @@ try:
         day = currentDate[2]
         print('Hour:')
         print(hour)
-        #Sending email at 08.00 and 18.00
+        nightValues = ""
+        dayValues = ""
+        eveningValues = ""
+        
+        if hour == 3 and day != previousDay:
+
+            nightValues = {
+                        "temp": tempValue,
+                        "humidity": humidValue,
+                        "groundmoist": groundmoisture,
+                        "light" : roundedlight
+                        }
+
+        if hour == 12 and day != previousDay:
+
+            dayValues = {
+                        "temp": tempValue,
+                        "humidity": humidValue,
+                        "groundmoist": groundmoisture,
+                        "light" : roundedlight
+                        }
+             
+        #Sending email at 18.00
+        #The email will consist of temps, humid and light at 03, 08 and 18.
         if hour == 18 and day != previousDay:
-          send_email("karin.eh@hotmail.se", tempValue, humidValue, groundmoisture, roundedlight)
-          previousDay = day
-          send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
-          previousDay = day
-          send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
-          previousDay = day
-          send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
-          previousDay = day
+          
+            eveningValues = {
+                        "temp": tempValue,
+                        "humidity": humidValue,
+                        "groundmoist": groundmoisture,
+                        "light" : roundedlight
+                        }
+           
+            send_email("karin.eh@hotmail.se", tempValue, humidValue, groundmoisture, roundedlight)
+            previousDay = day
+            send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
+            previousDay = day
+            send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
+            previousDay = day
+            send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
+            previousDay = day
         
         print(f'Publish light:{roundedlight}')
         print(f'Publish temp:{tempValue}')

@@ -9,7 +9,7 @@ email_subject = '🌞Uppdatering från växthus🌞'
 # Define the email content with a green background'
 
 
-def email_content(temp, humidity, soilmoisture, light):
+def email_content(dayvalues, nightvalues, eveningvalues):
     return f"""
 <html>
 <head>
@@ -44,10 +44,25 @@ def email_content(temp, humidity, soilmoisture, light):
 <body>
     <div id="pic">
         <div id="card">
-            <p>Det är <strong>{temp}°</strong></p>
-            <p>Fuktigheten i luften är <strong>{humidity}</strong></p>
-            <p>Fuktigheten i jorden är <strong>{soilmoisture}%</strong></p>
-            <p>Det är <strong>{light}</strong> ljust</p>
+            <p>Klockan <strong>12</strong></p>
+            <p>Temp: <strong>{dayvalues["temp"]}°</strong></p>
+            <p>Fuktigheten i luft: <strong>{dayvalues["humidity"]}</strong></p>
+            <p>Fuktigheten i jord: <strong>{dayvalues["groundmoist"]}%</strong></p>
+            <p>Ljusstryka: <strong>{dayvalues["light"]}</strong> ljust</p>
+
+            <br>
+            <p>Klockan <strong>18</strong></p>
+            <p>Temp: <strong>{eveningvalues["temp"]}°</strong></p>
+            <p>Fuktigheten i luft: <strong>{eveningvalues["humidity"]}</strong></p>
+            <p>Fuktigheten i jord: <strong>{eveningvalues["groundmoist"]}%</strong></p>
+            <p>Ljusstryka: <strong>{eveningvalues["light"]}</strong> ljust</p>
+            
+            <br>
+            <p>Klockan <strong>03</strong></p>
+            <p>Temp: <strong>{nightvalues["temp"]}°</strong></p>
+            <p>Fuktigheten i luft: <strong>{nightvalues["humidity"]}</strong></p>
+            <p>Fuktigheten i jord: <strong>{nightvalues["groundmoist"]}%</strong></p>
+            <p>Ljusstryka: <strong>{nightvalues["light"]}</strong> ljust</p>
         </div>
     </div>
 </body>
@@ -55,14 +70,14 @@ def email_content(temp, humidity, soilmoisture, light):
 """
 
 
-def send_email(reciever, temp, humidity, soilmoisture, light):
-    
+def send_email(reciever, dayvalues, nightvalues, eveningvalues):
+
     smtp = lib.umail.SMTP('smtp.gmail.com', 465, ssl=True)
     smtp.login(sender_email, sender_app_password)
     smtp.to(reciever)
     smtp.write(f"Subject: {email_subject}\n")
     smtp.write("Content-Type: text/html\n")
     smtp.write("\n")  # Empty line to separate headers from content
-    smtp.write(email_content(temp, humidity, soilmoisture, light))
+    smtp.write(email_content(dayvalues, nightvalues, eveningvalues))
     smtp.send()
     smtp.quit()
