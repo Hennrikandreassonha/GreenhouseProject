@@ -63,13 +63,15 @@ try:
         print(currentDate)
         hour = currentDate[3] + 2
         day = currentDate[2]
+        minute = currentDate[4]
         print('Hour:')
         print(hour)
         nightValues = ""
         dayValues = ""
         eveningValues = ""
-        
-        if hour == 3 and day != previousDay:
+
+        #Saving values for sending later
+        if hour == 3 and minute == 0 and day != previousDay:
 
             nightValues = {
                         "temp": tempValue,
@@ -78,7 +80,7 @@ try:
                         "light" : roundedlight
                         }
 
-        if hour == 12 and day != previousDay:
+        if hour == 12 and minute == 0 and day != previousDay:
 
             dayValues = {
                         "temp": tempValue,
@@ -89,7 +91,7 @@ try:
              
         #Sending email at 18.00
         #The email will consist of temps, humid and light at 03, 08 and 18.
-        if hour == 18 and day != previousDay:
+        if hour == 18 and minute == 0 and day != previousDay:
           
             eveningValues = {
                         "temp": tempValue,
