@@ -2,6 +2,7 @@ import network
 from mysecrets import secrets
 import time
 import ntptime
+import machine
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
@@ -11,5 +12,11 @@ while wlan.isconnected() == False:
     time.sleep(1)
 print("Connected to WiFi")
 
-ntptime.settime()
+try:
+    ntptime.settime()
+
+except Exception as e:
+    print(f'Failed to publish message: {e}')
+    machine.reset()
+
 print(time.localtime())

@@ -1,5 +1,5 @@
 import lib.umail
-from secrets import secrets
+from mysecrets import secrets
 
 # Email details
 sender_email = secrets['sender-email']
@@ -32,20 +32,19 @@ def email_content(dayvalues, nightvalues, eveningvalues):
         #pic {{
             background-image: url("https://cdn.wallpapersafari.com/63/50/1adgR2.jpg");
             background-repeat: no-repeat;
-            background-size: 100%;
-            height: 1000px;
+            background-size: cover;
+            height: 1500px;
             width: 500px;
         }}
 
         #card {{
             background-color: white;
             padding: 2rem;
-            margin-top: 150px;
+            margin-top: 900px;
             border-radius: 25px;
             position: absolute;
-            top: 150px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -70%);
             text-align: center;
             font-size: 24px;
             padding: 2rem 1rem;
@@ -62,14 +61,14 @@ def email_content(dayvalues, nightvalues, eveningvalues):
             <p>Klockan <strong>12</strong></p>
             <p>Temp: <strong>{daytemp}°</strong></p>
             <p>Fuktigheten i luft: <strong>{dayhumid}</strong></p>
-            <p>Fuktigheten i jord: <strong>{daygroundmoist}%</strong></p>
+            <p>Fuktigheten i jord: <strong>{daygroundmoist}</strong></p>
             <p>Ljusstryka: <strong>{daylight}</strong> ljust</p>
 
             <br>
             <p>Klockan <strong>18</strong></p>
             <p>Temp: <strong>{eveningtemp}°</strong></p>
             <p>Fuktigheten i luft: <strong>{eveninghumid}</strong></p>
-            <p>Fuktigheten i jord: <strong>{eveninggroundmoist}%</strong></p>
+            <p>Fuktigheten i jord: <strong>{eveninggroundmoist}</strong></p>
             <p>Ljusstryka: <strong>{eveninglight}</strong> ljust</p>
             
             <br>
