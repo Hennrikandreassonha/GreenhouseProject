@@ -10,6 +10,21 @@ email_subject = '🌞Uppdatering från växthus🌞'
 
 
 def email_content(dayvalues, nightvalues, eveningvalues):
+    daytemp = dayvalues["temp"]
+    dayhumid = dayvalues["humidity"]
+    daygroundmoist = dayvalues["groundmoist"]
+    daylight = dayvalues["light"]
+
+    eveningtemp = eveningvalues["temp"]
+    eveninghumid = eveningvalues["humidity"]
+    eveninggroundmoist = eveningvalues["groundmoist"]
+    eveninglight = eveningvalues["light"]
+
+    nighttemp = nightvalues["temp"]
+    nighthumid = nightvalues["humidity"]
+    nightgroundmoist = nightvalues["groundmoist"]
+    nightlight = nightvalues["light"]
+
     return f"""
 <html>
 <head>
@@ -45,24 +60,24 @@ def email_content(dayvalues, nightvalues, eveningvalues):
     <div id="pic">
         <div id="card">
             <p>Klockan <strong>12</strong></p>
-            <p>Temp: <strong>{dayvalues["temp"]}°</strong></p>
-            <p>Fuktigheten i luft: <strong>{dayvalues["humidity"]}</strong></p>
-            <p>Fuktigheten i jord: <strong>{dayvalues["groundmoist"]}%</strong></p>
-            <p>Ljusstryka: <strong>{dayvalues["light"]}</strong> ljust</p>
+            <p>Temp: <strong>{daytemp}°</strong></p>
+            <p>Fuktigheten i luft: <strong>{dayhumid}</strong></p>
+            <p>Fuktigheten i jord: <strong>{daygroundmoist}%</strong></p>
+            <p>Ljusstryka: <strong>{daylight}</strong> ljust</p>
 
             <br>
             <p>Klockan <strong>18</strong></p>
-            <p>Temp: <strong>{eveningvalues["temp"]}°</strong></p>
-            <p>Fuktigheten i luft: <strong>{eveningvalues["humidity"]}</strong></p>
-            <p>Fuktigheten i jord: <strong>{eveningvalues["groundmoist"]}%</strong></p>
-            <p>Ljusstryka: <strong>{eveningvalues["light"]}</strong> ljust</p>
+            <p>Temp: <strong>{eveningtemp}°</strong></p>
+            <p>Fuktigheten i luft: <strong>{eveninghumid}</strong></p>
+            <p>Fuktigheten i jord: <strong>{eveninggroundmoist}%</strong></p>
+            <p>Ljusstryka: <strong>{eveninglight}</strong> ljust</p>
             
             <br>
             <p>Klockan <strong>03</strong></p>
-            <p>Temp: <strong>{nightvalues["temp"]}°</strong></p>
-            <p>Fuktigheten i luft: <strong>{nightvalues["humidity"]}</strong></p>
-            <p>Fuktigheten i jord: <strong>{nightvalues["groundmoist"]}%</strong></p>
-            <p>Ljusstryka: <strong>{nightvalues["light"]}</strong> ljust</p>
+            <p>Temp: <strong>{nighttemp}°</strong></p>
+            <p>Fuktigheten i luft: <strong>{nighthumid}</strong></p>
+            <p>Fuktigheten i jord: <strong>{nightgroundmoist}%</strong></p>
+            <p>Ljusstryka: <strong>{nightlight}</strong> ljust</p>
         </div>
     </div>
 </body>

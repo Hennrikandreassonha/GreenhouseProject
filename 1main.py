@@ -47,7 +47,7 @@ previousDay = ""
 
 # For showing information on LCD screen
 def lcd_loop():
-    #Had to declare them again, maybe since im using another core... Hmmm
+    #Had to declare them again, might be because im using another core... Hmmm
     tempSensor = dht.DHT11(Pin(27))
     #Light sensor
     lightsensor = TSL2591(i2c)
@@ -89,7 +89,7 @@ def lcd_loop():
         time.sleep(1)
 
 # Start the LCD loop in a separate thread
-_thread.start_new_thread(lcd_loop, ())
+# _thread.start_new_thread(lcd_loop, ())
 
 try:
       while True:
@@ -118,7 +118,7 @@ try:
         eveningValues = ""
 
         #Saving values for sending later
-        if hour == 3 and minute == 0 and day != previousDay:
+        if hour == 3 and day != previousDay:
 
             nightValues = {
                         "temp": tempValue,
@@ -127,7 +127,7 @@ try:
                         "light" : roundedlight
                         }
 
-        if hour == 12 and minute == 0 and day != previousDay:
+        if hour == 12 and day != previousDay:
 
             dayValues = {
                         "temp": tempValue,
@@ -138,7 +138,7 @@ try:
              
         #Sending email at 18.00
         #The email will consist of temps, humid and light at 03, 08 and 18.
-        if hour == 18 and minute == 0 and day != previousDay:
+        if hour == 18 and day != previousDay:
           
             eveningValues = {
                         "temp": tempValue,
@@ -152,8 +152,8 @@ try:
             # send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
             # previousDay = day
             # send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
-        
-            send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
+            print("123123")
+            send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
 
             previousDay = day
         

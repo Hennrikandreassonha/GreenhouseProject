@@ -12,3 +12,4 @@ while wlan.isconnected() == False:
 print("Connected to WiFi")
 
 ntptime.settime()
+print(time.localtime())
