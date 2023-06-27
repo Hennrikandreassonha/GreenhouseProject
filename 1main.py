@@ -8,7 +8,7 @@ from lib.stemma_soil_sensor import StemmaSoilSensor
 from lib.tsl2591 import TSL2591
 from lib.SendEmail import send_email
 from mysecrets import secrets
-from lib.pico_i2c_lcd import LcdApi
+from lib.pico_i2c_lcd import I2cLcd
 import json
 import time
 
@@ -32,28 +32,41 @@ mqtt_client = MQTTClient(
 mqtt_client.connect()
 
 # Defining sensors
+i2c = machine.I2C(0, sda=machine.Pin(0), scl=machine.Pin(1), freq=400000)
 
 #DHT air temp and moisture 
 tempSensor = dht.DHT11(Pin(27))
-i2c = machine.I2C(0, sda=machine.Pin(0), scl=machine.Pin(1), freq=400000)
 #Light sensor
 lightsensor = TSL2591(i2c)
 #Ground Moist sensor
 moistsensor = StemmaSoilSensor(i2c)
 #LCD screen
-lcd = LcdApi(i2c, 39, 2, 16)
+lcd = I2cLcd(i2c, 39, 2, 16)
 
 previousDay = ""
 
-# Define a function for the LCD loop
+# For showing information on LCD screen
 def lcd_loop():
     while True:
-        lcd.putstr("Fukt jord:  1000\n")
-        lcd.putstr("Ljusstyrka: 1000")
+
+        lux = lightsensor.get_lux()
+        roundedlight = round(lux, 2)
+        
+        #Get ground moist and temp
+        groundmoisture = moistsensor.get_moisture()
+
+        #Get temp and moisture in air
+        tempSensor.measure()
+        tempValue = tempSensor.temperature()
+        humidValue = tempSensor.humidity()
+
+        lcd.hide_cursor()
+        lcd.putstr("Fukt jord: {groundmoisture}\n")
+        lcd.putstr("Ljusstyrka: {roundedlight}")
         time.sleep(5)
         lcd.clear()
-        lcd.putstr("Temperatur: 33" + chr(223) + "C")
-        lcd.putstr("Fuktighet:  55%")
+        lcd.putstr("Temperatur: {tempValue}" + chr(223) + "C")
+        lcd.putstr("Fuktighet:  {humidValue}%")
         time.sleep(5)
         lcd.clear()
 
@@ -70,7 +83,7 @@ try:
         groundmoisture = moistsensor.get_moisture()
         groundtemperature = moistsensor.get_temp()
 
-        #Get temp and moisture in iar
+        #Get temp and moisture in air
         tempSensor.measure()
         tempValue = tempSensor.temperature()
         humidValue = tempSensor.humidity()
