@@ -81,7 +81,6 @@ try:
         
         #Get ground moist and temp
         groundmoisture = moistsensor.get_moisture()
-        groundtemperature = moistsensor.get_temp()
 
         #Get temp and moisture in air
         tempSensor.measure()
