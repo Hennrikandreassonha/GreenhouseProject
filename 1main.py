@@ -1,12 +1,14 @@
 import dht
 from machine import Pin
 import machine
+import _thread
 from lib.umqttsimple import MQTTClient
 from lib.seesaw import Seesaw
 from lib.stemma_soil_sensor import StemmaSoilSensor
 from lib.tsl2591 import TSL2591
 from lib.SendEmail import send_email
-from secrets import secrets
+from mysecrets import secrets
+from lib.pico_i2c_lcd import LcdApi
 import json
 import time
 
@@ -38,8 +40,25 @@ i2c = machine.I2C(0, sda=machine.Pin(0), scl=machine.Pin(1), freq=400000)
 lightsensor = TSL2591(i2c)
 #Ground Moist sensor
 moistsensor = StemmaSoilSensor(i2c)
+#LCD screen
+lcd = LcdApi(i2c, 39, 2, 16)
 
 previousDay = ""
+
+# Define a function for the LCD loop
+def lcd_loop():
+    while True:
+        lcd.putstr("Fukt jord:  1000\n")
+        lcd.putstr("Ljusstyrka: 1000")
+        time.sleep(5)
+        lcd.clear()
+        lcd.putstr("Temperatur: 33" + chr(223) + "C")
+        lcd.putstr("Fuktighet:  55%")
+        time.sleep(5)
+        lcd.clear()
+
+# Start the LCD loop in a separate thread
+_thread.start_new_thread(lcd_loop, ())
 
 try:
       while True:

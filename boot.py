@@ -1,11 +1,11 @@
 import network
-from secrets import secrets
+from mysecrets import secrets
 import time
 import ntptime
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect('Lennart', 'bastu2022')
+wlan.connect(secrets['wifi-ssid'], secrets['wifi-password'])
 while wlan.isconnected() == False:
     print('Waiting for connection...')
     time.sleep(1)
