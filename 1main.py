@@ -55,32 +55,38 @@ def lcd_loop():
     moistsensor = StemmaSoilSensor(i2c)
 
     while True:
+        try:
+            lux = lightsensor.get_lux()
+            roundedlight = round(lux, 2)
 
-        lux = lightsensor.get_lux()
-        roundedlight = round(lux, 2)
+            # Get ground moist and temp
+            groundmoisture = moistsensor.get_moisture()
 
-        # Get ground moist and temp
-        groundmoisture = moistsensor.get_moisture()
+            # Get temp and moisture in air
+            tempSensor.measure()
+            tempValue = tempSensor.temperature()
+            humidValue = tempSensor.humidity()
 
-        # Get temp and moisture in air
-        tempSensor.measure()
-        tempValue = tempSensor.temperature()
-        humidValue = tempSensor.humidity()
-
-        lcd.hide_cursor()
-        lcd.move_to(0,0)
-        lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
-        lcd.move_to(0,1)
-        lcd.putstr("Ljusstyrka: {}".format(roundedlight))
-        time.sleep(5)
-        lcd.clear()
-        lcd.move_to(0,0)
-        lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
-        lcd.move_to(0,1)
-        lcd.putstr("Fuktighet:  {}%".format(humidValue))
-        time.sleep(5)
-        lcd.clear()
-
+            lcd.hide_cursor()
+            lcd.move_to(0,0)
+            lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
+            lcd.move_to(0,1)
+            lcd.putstr("Ljusstyrka: {}".format(roundedlight))
+            time.sleep(5)
+            lcd.clear()
+            lcd.move_to(0,0)
+            lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
+            lcd.move_to(0,1)
+            lcd.putstr("Fuktighet:  {}%".format(humidValue))
+            time.sleep(5)
+            lcd.clear()
+        
+        except Exception as e:
+            print("Error occurred:", e)
+            # Optionally, you can add logging or error handling code here
+        
+        # Delay before the next iteration of the loop
+        time.sleep(1)
 
 # Start the LCD loop in a separate thread
 _thread.start_new_thread(lcd_loop, ())
@@ -141,12 +147,12 @@ try:
                         "light" : roundedlight
                         }
            
-            send_email("karin.eh@hotmail.se", tempValue, humidValue, groundmoisture, roundedlight)
-            previousDay = day
-            send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
-            previousDay = day
-            send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
-            previousDay = day
+            # send_email("karin.eh@hotmail.se", tempValue, humidValue, groundmoisture, roundedlight)
+            # previousDay = day
+            # send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
+            # previousDay = day
+            # send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
+        
             send_email("henrik1995a@live.se", tempValue, humidValue, groundmoisture, roundedlight)
 
             previousDay = day
@@ -184,5 +190,3 @@ try:
 
 except Exception as e:
     print(f'Failed to publish message: {e}')
-finally:
-    mqtt_client.disconnect()
