@@ -55,43 +55,48 @@ def lcd_loop():
     lightsensor = TSL2591(i2c)
     # Ground Moist sensor
     moistsensor = StemmaSoilSensor(i2c)
+    try:
+        while True:
 
-    while True:
+                lux = lightsensor.get_lux() 
+                roundedlight = round(lux, 2) * 100
 
-            lux = lightsensor.get_lux() 
-            roundedlight = round(lux, 2) * 100
+                # Get ground moist and temp
+                groundmoisture = moistsensor.get_moisture()
 
-            # Get ground moist and temp
-            groundmoisture = moistsensor.get_moisture()
+                # Get temp and moisture in air
+                tempSensor.measure()
+                tempValue = tempSensor.temperature()
+                humidValue = tempSensor.humidity()
 
-            # Get temp and moisture in air
-            tempSensor.measure()
-            tempValue = tempSensor.temperature()
-            humidValue = tempSensor.humidity()
-
-            lcd.hide_cursor()
-            lcd.move_to(0, 0)
-            lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
-            lcd.move_to(0, 1)
-            lcd.putstr("Ljusstyrka: {}".format(roundedlight))
-            time.sleep(5)
-            lcd.clear()
-            lcd.move_to(0, 0)
-            lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
-            lcd.move_to(0, 1)
-            lcd.putstr("Fuktighet:  {}%".format(humidValue))
-            time.sleep(5)
-            lcd.clear()
+                lcd.hide_cursor()
+                lcd.move_to(0, 0)
+                lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
+                lcd.move_to(0, 1)
+                lcd.putstr("Ljusstyrka: {}".format(roundedlight))
+                time.sleep(5)
+                lcd.clear()
+                lcd.move_to(0, 0)
+                lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
+                lcd.move_to(0, 1)
+                lcd.putstr("Fuktighet:  {}%".format(humidValue))
+                time.sleep(5)
+                lcd.clear()
 
 
-            time.sleep(1)
+                time.sleep(1)
+
+    except Exception as e:
+        machine.reset()
+        print(f'Failed to publish message: {e}')
 
 # Start the LCD loop in a separate thread
-_thread.start_new_thread(lcd_loop, ())
+# _thread.start_new_thread(lcd_loop, ())
 
 
-# try:
-while True:
+try:
+    while True:
+        print("loop")
         # Get light value
         lux = lightsensor.get_lux()
         roundedlight = round(lux, 0)
@@ -186,6 +191,7 @@ while True:
 
         time.sleep(15)
 
-# except Exception as e:
-#     print(f'Failed to publish message: {e}')
-#     machine.reset()
+except Exception as e:
+    machine.reset()
+    time.sleep(1)
+    print(f'Failed to publish message: {e}')

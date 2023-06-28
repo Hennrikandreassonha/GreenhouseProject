@@ -18,5 +18,6 @@ try:
 except Exception as e:
     print(f'Failed to publish message: {e}')
     machine.reset()
+    time.sleep(1)
 
 print(time.localtime())
