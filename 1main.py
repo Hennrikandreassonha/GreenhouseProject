@@ -71,6 +71,7 @@ def lcd_loop():
             lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
             lcd.move_to(0, 1)
             lcd.putstr("Ljusstyrka: {}".format(roundedlight))
+
             time.sleep(5)
             lcd.clear()
             lcd.move_to(0, 0)
@@ -78,7 +79,6 @@ def lcd_loop():
             lcd.move_to(0, 1)
             lcd.putstr("Fuktighet:  {}%".format(humidValue))
             lcd.clear()
-            time.sleep(1)
 
             time.sleep(5)
 
@@ -93,7 +93,6 @@ try:
     while True:
         # Get light value
         lux = lightsensor.get_lux() * 100
-        print(lux)
         roundedlight = round(lux, 0)
         roundedlight = roundedlight
         
@@ -131,18 +130,20 @@ try:
             
         # Sending email at 18.00
         # The email will consist of temps, humid and light at 03, 08 and 18.
-        if hour == 20 and day != previousDay:
+        if hour == 17 and day != previousDay:
 
             eveningValues = values.copy()
             send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
             previousDay = day
         
-        print(roundedlight)
         print(f'Publish light:{roundedlight}')
         print(f'Publish temp:{tempValue}')
         print(f'Publish humid:{humidValue}')
         print(f'Publish ground moist:{groundmoisture}')
-
+        nightValues = values.copy()
+        dayValues = values.copy()
+        eveningValues = values.copy()
+        send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
         # Create a dictionary to represent the JSON payload
         tempPayload = {
             "temp": tempValue
@@ -172,6 +173,7 @@ try:
 except Exception as e:
     print(f'Failed to publish message: {e}')
     
+    # If error occours, pico will reset. Making it upload data again.
     # wlan = network.WLAN(network.STA_IF)      
     # wlan.disconnect()
     time.sleep(1)

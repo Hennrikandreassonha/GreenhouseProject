@@ -38,8 +38,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
         }}
 
         #card {{
-            background-color: white;
-            padding: 2rem;
+            background-color: white !important;
             margin-top: 900px;
             border-radius: 25px;
             position: absolute;

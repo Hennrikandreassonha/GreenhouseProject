@@ -24,7 +24,6 @@ def email_content(dayvalues, nightvalues, eveningvalues):
 <head>
     <style>
         #pic {{
-            background-image: url("https://cdn.wallpapersafari.com/63/50/1adgR2.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             height: 1500px;
@@ -76,7 +75,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
 </body>
 </html>
 """
-from secrets import secrets
+from mysecrets import secrets
 import lib.umail
 
 sender_email = secrets['sender-email']
