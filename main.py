@@ -125,18 +125,14 @@ while True:
             # Saving values for sending later
             if hour == 3 and day != previousDay:
                 nightValues = values.copy()
-                send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
 
             if hour == 12 and day != previousDay:
                 dayValues = values.copy()
-                send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
 
             # Sending email at 18.00
             # The email will consist of temps, humid and light at 03, 08 and 18.
-            if hour == 18 and day != previousDay:
-                nightValues = values.copy()
-                dayValues = values.copy()
-                eveningValues = values.copy()
+            if hour == 18 and day != previousDay and dayValues is not None and nightValues is not None:
+
                 eveningValues = values.copy()
                 send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
                 previousDay = day
