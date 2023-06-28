@@ -11,6 +11,7 @@ from mysecrets import secrets
 from lib.pico_i2c_lcd import I2cLcd
 import json
 import time
+import network
 
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
@@ -47,9 +48,8 @@ previousDay = ""
 
 # For showing information on LCD screen
 
-
 def lcd_loop():
-    # Had to declare them again, might be because im using another core... Hmmm
+    # Had to declare sensors again, might be because im using another core... Hmmm
     tempSensor = dht.DHT11(Pin(27))
     # Light sensor
     lightsensor = TSL2591(i2c)
@@ -77,9 +77,10 @@ def lcd_loop():
             lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
             lcd.move_to(0, 1)
             lcd.putstr("Fuktighet:  {}%".format(humidValue))
-            time.sleep(5)
             lcd.clear()
             time.sleep(1)
+
+            time.sleep(5)
 
     except Exception as e:
         machine.reset()
@@ -95,7 +96,7 @@ try:
         print(lux)
         roundedlight = round(lux, 0)
         roundedlight = roundedlight
-
+        
         # Get ground moist and temp
         groundmoisture = moistsensor.get_moisture()
 
@@ -131,9 +132,7 @@ try:
         # Sending email at 18.00
         # The email will consist of temps, humid and light at 03, 08 and 18.
         if hour == 20 and day != previousDay:
-            eveningValues = values.copy()
-            nightValues = values.copy()
-            dayValues = values.copy()
+
             eveningValues = values.copy()
             send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
             previousDay = day
@@ -171,6 +170,9 @@ try:
         time.sleep(15)
 
 except Exception as e:
-    machine.reset()
-    time.sleep(1)
     print(f'Failed to publish message: {e}')
+    
+    # wlan = network.WLAN(network.STA_IF)      
+    # wlan.disconnect()
+    time.sleep(1)
+    # machine.reset()
