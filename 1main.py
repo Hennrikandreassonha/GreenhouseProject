@@ -58,33 +58,28 @@ def lcd_loop():
     try:
         while True:
 
-                lux = lightsensor.get_lux() 
-                roundedlight = round(lux, 2) * 100
-
-                # Get ground moist and temp
-                groundmoisture = moistsensor.get_moisture()
-
-                # Get temp and moisture in air
-                tempSensor.measure()
-                tempValue = tempSensor.temperature()
-                humidValue = tempSensor.humidity()
-
-                lcd.hide_cursor()
-                lcd.move_to(0, 0)
-                lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
-                lcd.move_to(0, 1)
-                lcd.putstr("Ljusstyrka: {}".format(roundedlight))
-                time.sleep(5)
-                lcd.clear()
-                lcd.move_to(0, 0)
-                lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
-                lcd.move_to(0, 1)
-                lcd.putstr("Fuktighet:  {}%".format(humidValue))
-                time.sleep(5)
-                lcd.clear()
-
-
-                time.sleep(1)
+            lux = lightsensor.get_lux() 
+            roundedlight = round(lux, 2) * 100
+            # Get ground moist and temp
+            groundmoisture = moistsensor.get_moisture()
+            # Get temp and moisture in air
+            tempSensor.measure()
+            tempValue = tempSensor.temperature()
+            humidValue = tempSensor.humidity()
+            lcd.hide_cursor()
+            lcd.move_to(0, 0)
+            lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
+            lcd.move_to(0, 1)
+            lcd.putstr("Ljusstyrka: {}".format(roundedlight))
+            time.sleep(5)
+            lcd.clear()
+            lcd.move_to(0, 0)
+            lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
+            lcd.move_to(0, 1)
+            lcd.putstr("Fuktighet:  {}%".format(humidValue))
+            time.sleep(5)
+            lcd.clear()
+            time.sleep(1)
 
     except Exception as e:
         machine.reset()
@@ -93,14 +88,14 @@ def lcd_loop():
 # Start the LCD loop in a separate thread
 # _thread.start_new_thread(lcd_loop, ())
 
-
 try:
     while True:
-        print("loop")
         # Get light value
-        lux = lightsensor.get_lux()
+        lux = lightsensor.get_lux() * 100
+        print(lux)
         roundedlight = round(lux, 0)
-        roundedlight = roundedlight * 1000
+        roundedlight = roundedlight
+
         # Get ground moist and temp
         groundmoisture = moistsensor.get_moisture()
 
@@ -111,12 +106,9 @@ try:
 
         # For sending emails
         currentDate = time.localtime()
-        print(currentDate)
         hour = currentDate[3] + 2
         day = currentDate[2]
         minute = currentDate[4]
-        print('Hour:')
-        print(hour)
 
         # Create an empty dictionary
         values = {}
@@ -129,37 +121,24 @@ try:
 
         # Saving values for sending later
         if hour == 3 and day != previousDay:
-
             nightValues = values.copy()
-            send_email("henrik1995a@live.se", dayValues,
-                   nightValues, eveningValues)
+            send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
             
         if hour == 12 and day != previousDay:
-
             dayValues = values.copy()
-            send_email("henrik1995a@live.se", dayValues,
-                   nightValues, eveningValues)
+            send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
             
         # Sending email at 18.00
         # The email will consist of temps, humid and light at 03, 08 and 18.
         if hour == 20 and day != previousDay:
-
             eveningValues = values.copy()
             nightValues = values.copy()
             dayValues = values.copy()
             eveningValues = values.copy()
-            send_email("henrik1995a@live.se", dayValues,
-                   nightValues, eveningValues)
-            # send_email("karin.eh@hotmail.se", tempValue, humidValue, groundmoisture, roundedlight)
-            # previousDay = day
-            # send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
-            # previousDay = day
-            # send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
-
+            send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
             previousDay = day
         
         print(roundedlight)
-
         print(f'Publish light:{roundedlight}')
         print(f'Publish temp:{tempValue}')
         print(f'Publish humid:{humidValue}')
