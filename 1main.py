@@ -45,6 +45,27 @@ moistsensor = StemmaSoilSensor(i2c)
 lcd = I2cLcd(i2c, 39, 2, 16)
 
 previousDay = ""
+lcddisplay1 = True
+
+
+lux = lightsensor.get_lux() * 100
+roundedlight = round(lux, 0)
+
+groundmoisture = moistsensor.get_moisture
+
+tempSensor.measure()
+tempValue = tempSensor.temperature()
+humidValue = tempSensor.humidity()
+
+#Initiating values, avoiding err.
+values = {}
+values["temp"] = int(tempValue)
+values["humidity"] = int(humidValue)
+values["groundmoist"] = int(groundmoisture)
+values["light"] = int(roundedlight)
+
+nightValues = values.copy()
+dayValues = values.copy()
 
 while True:
     try:
@@ -68,7 +89,6 @@ while True:
             minute = currentDate[4]
 
             # Create an empty dictionary
-            values = {}
 
             # Convert the values to integers
             values["temp"] = int(tempValue)
@@ -85,7 +105,7 @@ while True:
 
             # Sending email at 18.00
             # The email will consist of temps, humid and light at 03, 08 and 18.
-            if hour == 18 and day != previousDay and dayValues is not None and nightValues is not None:
+            if hour == 18 and day != previousDay:
 
                 eveningValues = values.copy()
                 send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
@@ -124,8 +144,6 @@ while True:
             # For displaying data in LCD
             #Writing out the values.
 
-            lcddisplay1 = True
-            
             lcd.clear()
 
             if lcddisplay1:
