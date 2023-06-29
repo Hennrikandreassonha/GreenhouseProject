@@ -51,13 +51,13 @@ lcddisplay1 = True
 lux = lightsensor.get_lux() * 100
 roundedlight = round(lux, 0)
 
-groundmoisture = moistsensor.get_moisture
+groundmoisture = moistsensor.get_moisture()
 
 tempSensor.measure()
 tempValue = tempSensor.temperature()
 humidValue = tempSensor.humidity()
 
-#Initiating values, avoiding err.
+# Initiating values, avoiding err.
 values = {}
 values["temp"] = int(tempValue)
 values["humidity"] = int(humidValue)
@@ -105,7 +105,7 @@ while True:
 
             # Sending email at 18.00
             # The email will consist of temps, humid and light at 03, 08 and 18.
-            if hour == 18 and day != previousDay:
+            if hour == 19 and day != previousDay:
 
                 eveningValues = values.copy()
                 send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
