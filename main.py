@@ -46,52 +46,6 @@ lcd = I2cLcd(i2c, 39, 2, 16)
 
 previousDay = ""
 
-# For showing information on LCD screen
-
-def lcd_loop():
-    # Had to declare sensors again, might be because im using another core... Hmmm
-    tempSensor = dht.DHT11(Pin(27))
-    # Light sensor
-    lightsensor = TSL2591(i2c)
-    # Ground Moist sensor
-    moistsensor = StemmaSoilSensor(i2c)
-    while True:
-        try:
-            while True:
-
-                lux = lightsensor.get_lux() 
-                roundedlight = round(lux, 2) * 100
-                # Get ground moist and temp
-                groundmoisture = moistsensor.get_moisture()
-                # Get temp and moisture in air
-                tempSensor.measure()
-                tempValue = tempSensor.temperature()
-                humidValue = tempSensor.humidity()
-
-                lcd.hide_cursor()
-                lcd.move_to(0, 0)
-                lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
-                lcd.move_to(0, 1)
-                lcd.putstr("Ljusstyrka: {}".format(roundedlight))
-
-                time.sleep(7)
-
-                lcd.clear()
-                lcd.move_to(0, 0)
-                lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
-                lcd.move_to(0, 1)
-                lcd.putstr("Fuktighet:  {}%".format(humidValue))
-
-                time.sleep(7)
-                lcd.clear()
-
-        except Exception as e:
-            machine.reset()
-            print(f'Failure in LCD screen: {e}')
-
-# Start the LCD loop in a separate thread
-_thread.start_new_thread(lcd_loop, ())
-
 while True:
     try:
         while True:
@@ -166,6 +120,29 @@ while True:
             mqtt_client.publish(mqtt_publish_temp, json_tempPayload)
             mqtt_client.publish(mqtt_publish_light, json_lightPayload)
             mqtt_client.publish(mqtt_publish_groundmoisture, json_groundmoisture)
+
+            # For displaying data in LCD
+            #Writing out the values.
+
+            lcddisplay1 = True
+            
+            lcd.clear()
+
+            if lcddisplay1:
+                
+                lcd.move_to(0, 0)
+                lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
+                lcd.move_to(0, 1)
+                lcd.putstr("Ljusstyrka: {}".format(roundedlight))
+                lcddisplay1 = False
+
+            else:
+
+                lcd.move_to(0, 0)
+                lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
+                lcd.move_to(0, 1)
+                lcd.putstr("Fuktighet:  {}%".format(humidValue))
+                lcddisplay1 = True
 
             time.sleep(15)
 
