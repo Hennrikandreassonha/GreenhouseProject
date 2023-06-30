@@ -57,7 +57,7 @@ tempSensor.measure()
 tempValue = tempSensor.temperature()
 humidValue = tempSensor.humidity()
 
-# Initiating values, avoiding err.
+# Initiating values, avoiding error later.
 values = {}
 values["temp"] = int(tempValue)
 values["humidity"] = int(humidValue)
@@ -86,7 +86,6 @@ while True:
             currentDate = time.localtime()
             hour = currentDate[3] + 2
             day = currentDate[2]
-            minute = currentDate[4]
 
             # Create an empty dictionary
 
@@ -108,6 +107,7 @@ while True:
             if hour == 19 and day != previousDay:
 
                 eveningValues = values.copy()
+
                 send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
                 previousDay = day
 

@@ -61,21 +61,21 @@ def email_content(dayvalues, nightvalues, eveningvalues):
             <p>Temp: <strong>{daytemp}°</strong></p>
             <p>Fuktighet luft: <strong>{dayhumid}</strong></p>
             <p>Fuktighet jord: <strong>{daygroundmoist}</strong></p>
-            <p>Ljusstyrka: <strong>{daylight}</strong> ljust</p>
+            <p>Ljusstyrka: <strong>{daylight}</strong></p>
 
             <br>
             <p>Klockan <strong>18</strong></p>
             <p>Temp: <strong>{eveningtemp}°</strong></p>
             <p>Fuktighet luft: <strong>{eveninghumid}</strong></p>
             <p>Fuktighet jord: <strong>{eveninggroundmoist}</strong></p>
-            <p>Ljusstyrka: <strong>{eveninglight}</strong> ljust</p>
+            <p>Ljusstyrka: <strong>{eveninglight}</strong></p>
             
             <br>
             <p>Klockan <strong>03</strong></p>
             <p>Temp: <strong>{nighttemp}°</strong></p>
             <p>Fuktighet luft: <strong>{nighthumid}</strong></p>
             <p>Fuktighet jord: <strong>{nightgroundmoist}%</strong></p>
-            <p>Ljusstyrka: <strong>{nightlight}</strong> ljust</p>
+            <p>Ljusstyrka: <strong>{nightlight}</strong></p>
         </div>
     </div>
 </body>
