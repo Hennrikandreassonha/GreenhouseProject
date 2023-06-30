@@ -142,12 +142,12 @@ while True:
             mqtt_client.publish(mqtt_publish_groundmoisture, json_groundmoisture)
 
             #If the hour is past 9 backlight will be off.
-            lcd.clear()
-            if hour > 9:
+            if hour > 21:
                     lcd.backlight_off()
 
             # For displaying data in LCD
-            #Writing out the values.
+            # Writing out the values.
+            lcd.clear()
 
             if lcddisplay1:
                 
