@@ -1,3 +1,5 @@
+#This is a file that is used to quickly test the mail function without having a having to run the main loop.
+
 eveningValues = {
     "temp": 123,
     "humidity": 123,
@@ -50,7 +52,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
 </head>
 <body>
     <div id="pic">
-        <div id="card">
+        <div id="card" style="background-color: white;>
             <p>Klockan <strong>12</strong></p>
             <p>Temp: <strong>{dayvalues["temp"]}°</strong></p>
             <p>Fuktigheten i luft: <strong>{dayvalues["humidity"]}</strong></p>
@@ -94,5 +96,10 @@ def send_email(reciever, dayvalues, nightvalues, eveningvalues):
     smtp.send()
     smtp.quit()
 
+try:
+    print("Test")
+    send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
 
-send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
+    #Email has been sent.
+except Exception as e:
+        print(f'Failed to send email: {e}')

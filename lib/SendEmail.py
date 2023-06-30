@@ -56,7 +56,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
 </head>
 <body>
     <div id="pic">
-        <div id="card">
+        <div id="card" style="background-color: white;>
             <p>Klockan <strong>12</strong></p>
             <p>Temp: <strong>{daytemp}°</strong></p>
             <p>Fuktighet luft: <strong>{dayhumid}</strong></p>
