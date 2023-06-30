@@ -47,7 +47,6 @@ lcd = I2cLcd(i2c, 39, 2, 16)
 previousDay = ""
 lcddisplay1 = True
 
-
 lux = lightsensor.get_lux() * 100
 roundedlight = round(lux, 0)
 
@@ -142,7 +141,10 @@ while True:
             mqtt_client.publish(mqtt_publish_groundmoisture, json_groundmoisture)
 
             #If the hour is past 9 backlight will be off.
-            if hour > 21:
+
+            from Utilities.Functions import Functions
+
+            if Functions.HourIsPastNine(hour):
                     lcd.backlight_off()
 
             # For displaying data in LCD
@@ -168,7 +170,8 @@ while True:
             time.sleep(15)
 
     except Exception as e:
-        print(f'Failed to publish message: {e}')
+        
+        print(f'Error in main loop: {e}')
 
         # If error occours, pico will reset. Making it upload data again.
         wlan = network.WLAN(network.STA_IF)      
