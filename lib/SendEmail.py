@@ -38,7 +38,6 @@ def email_content(dayvalues, nightvalues, eveningvalues):
         }}
 
         #card {{
-            background-color: white !important;
             margin-top: 900px;
             border-radius: 25px;
             position: absolute;
@@ -56,7 +55,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
 </head>
 <body>
     <div id="pic">
-        <div id="card">
+        <div id="card" style="background-color: white;">
             <p>Klockan <strong>12</strong></p>
             <p>Temp: <strong>{daytemp}°</strong></p>
             <p>Fuktighet luft: <strong>{dayhumid}</strong></p>
