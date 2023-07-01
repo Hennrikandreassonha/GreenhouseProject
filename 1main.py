@@ -111,8 +111,10 @@ while True:
 
                     send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
                     print("Success! Mail has been sent")
+                    
+                    previousDay = day
                     #Email has been sent.
-
+                    
                 except Exception as e:
                     
                     print(f'Failed to send email: {e}')
