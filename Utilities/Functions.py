@@ -6,5 +6,5 @@ class Functions:
         
     @staticmethod
     def HourIsPastNine(hour):
-        return hour <= 21
+        return hour >= 21
 

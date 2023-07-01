@@ -151,8 +151,13 @@ while True:
 
             from Utilities.Functions import Functions
 
+            print(f'Hour: {hour}')
+
             if Functions.HourIsPastNine(hour):
-                    lcd.backlight_off()
+                lcd.backlight_off()
+
+            else: 
+                lcd.backlight_on()
 
             # For displaying data in LCD
             # Writing out the values.
