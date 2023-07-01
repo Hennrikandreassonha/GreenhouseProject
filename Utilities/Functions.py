@@ -5,6 +5,6 @@ class Functions:
         self.name = name
         
     @staticmethod
-    def HourIsPastNine(hour):
+    def HourIsPastNine(hour: int) -> bool:
         return hour >= 21
 

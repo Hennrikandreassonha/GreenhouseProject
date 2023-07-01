@@ -153,7 +153,7 @@ while True:
 
             print(f'Hour: {hour}')
 
-            if Functions.HourIsPastNine(hour):
+            if not Functions.HourIsPastNine(hour):
                 lcd.backlight_off()
 
             else: 
@@ -179,6 +179,7 @@ while True:
                 lcd.putstr("Fuktighet:  {}%".format(humidValue))
                 lcddisplay1 = True
 
+            print("")
             time.sleep(15)
 
     except Exception as e:
