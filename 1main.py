@@ -106,11 +106,15 @@ while True:
             if hour == 8 and day != previousDay:
 
                 eveningValues = values.copy()
+
                 try:
+
                     send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
                     print("Success! Mail has been sent")
                     #Email has been sent.
+
                 except Exception as e:
+                    
                     print(f'Failed to send email: {e}')
 
             print(f'Publish light:{roundedlight}')
