@@ -56,23 +56,23 @@ def email_content(dayvalues, nightvalues, eveningvalues):
         <div id="card" style="background-color: white;">
             <p>Klockan <strong>12</strong></p>
             <p>Temp: <strong>{dayvalues["temp"]}°</strong></p>
-            <p>Fuktigheten i luft: <strong>{dayvalues["humidity"]}</strong></p>
-            <p>Fuktigheten i jord: <strong>{dayvalues["groundmoist"]}%</strong></p>
-            <p>Ljusstryka: <strong>{dayvalues["light"]}</strong> ljust</p>
+            <p>Fuktighet luft: <strong>{dayvalues["humidity"]}</strong></p>
+            <p>Fuktighet jord: <strong>{dayvalues["groundmoist"]}%</strong></p>
+            <p>Ljusstyrka: <strong>{dayvalues["light"]}</strong> ljust</p>
 
             <br>
             <p>Klockan <strong>18</strong></p>
             <p>Temp: <strong>{eveningvalues["temp"]}°</strong></p>
-            <p>Fuktigheten i luft: <strong>{eveningvalues["humidity"]}</strong></p>
-            <p>Fuktigheten i jord: <strong>{eveningvalues["groundmoist"]}%</strong></p>
-            <p>Ljusstryka: <strong>{eveningvalues["light"]}</strong> ljust</p>
+            <p>Fuktighet luft: <strong>{eveningvalues["humidity"]}</strong></p>
+            <p>Fuktighet jord: <strong>{eveningvalues["groundmoist"]}%</strong></p>
+            <p>Ljusstyrka: <strong>{eveningvalues["light"]}</strong> ljust</p>
             
             <br>
             <p>Klockan <strong>03</strong></p>
             <p>Temp: <strong>{nightvalues["temp"]}°</strong></p>
             <p>Fuktigheten i luft: <strong>{nightvalues["humidity"]}</strong></p>
             <p>Fuktigheten i jord: <strong>{nightvalues["groundmoist"]}%</strong></p>
-            <p>Ljusstryka: <strong>{nightvalues["light"]}</strong> ljust</p>
+            <p>Ljusstyrka: <strong>{nightvalues["light"]}</strong> ljust</p>
         </div>
     </div>
 </body>
