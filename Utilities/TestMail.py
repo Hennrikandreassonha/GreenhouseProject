@@ -1,24 +1,24 @@
 #This is a file that is used to quickly test the mail function without having a having to run the main loop.
 
 eveningValues = {
-    "temp": 123,
-    "humidity": 123,
-    "groundmoist": 123,
-    "light": 123
+    "temp": 22,
+    "humidity": 54,
+    "groundmoist": 900,
+    "light": 11
 }
 
 nightValues = {
-    "temp": 456,
-    "humidity": 456,
-    "groundmoist": 456,
-    "light": 456
+    "temp": 15,
+    "humidity": 20,
+    "groundmoist": 600,
+    "light": 4
 }
 
 dayValues = {
-    "temp": 789,
-    "humidity": 789,
-    "groundmoist": 789,
-    "light": 789
+    "temp": 27,
+    "humidity": 54,
+    "groundmoist": 1300,
+    "light": 16
 }
 def email_content(dayvalues, nightvalues, eveningvalues):
     return f"""
@@ -26,6 +26,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
 <head>
     <style>
         #pic {{
+            background-image: url("https://cdn.wallpapersafari.com/63/50/1adgR2.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             height: 1500px;
@@ -52,7 +53,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
 </head>
 <body>
     <div id="pic">
-        <div id="card" style="background-color: white;>
+        <div id="card" style="background-color: white;">
             <p>Klockan <strong>12</strong></p>
             <p>Temp: <strong>{dayvalues["temp"]}°</strong></p>
             <p>Fuktigheten i luft: <strong>{dayvalues["humidity"]}</strong></p>
@@ -97,9 +98,8 @@ def send_email(reciever, dayvalues, nightvalues, eveningvalues):
     smtp.quit()
 
 try:
-    print("Test")
     send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
-
+    print("Success! Mail has been sent")
     #Email has been sent.
 except Exception as e:
         print(f'Failed to send email: {e}')
