@@ -113,6 +113,11 @@ while True:
                     send_email("karin.eh@hotmail.se", dayValues, nightValues, eveningValues)
                     send_email("Richard.jurmo.berg@gmail.com", dayValues, nightValues, eveningValues)
                     send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
+                    send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
+                    previousDay = day
+                    send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
+                    previousDay = day
+                    
                     print("Success! Mail has been sent")
 
                     previousDay = day
