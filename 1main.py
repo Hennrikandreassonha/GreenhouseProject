@@ -103,15 +103,18 @@ while True:
 
             # Sending email at 18.00
             # The email will consist of temps, humid and light at 03, 08 and 18.
-            if hour == 8 and day != previousDay:
+            if hour == 18 and day != previousDay:
 
                 eveningValues = values.copy()
 
                 try:
 
                     send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
+                    send_email("karin.eh@hotmail.se", dayValues, nightValues, eveningValues)
+                    send_email("Richard.jurmo.berg@gmail.com", dayValues, nightValues, eveningValues)
+                    send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
                     print("Success! Mail has been sent")
-                    
+
                     previousDay = day
                     #Email has been sent.
                     
