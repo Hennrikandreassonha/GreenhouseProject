@@ -16,7 +16,7 @@ try:
     ntptime.settime()
 
 except Exception as e:
-    print(f'Failed to publish message: {e}')
+    print(f'Failed to set time: {e}')
     machine.reset()
     time.sleep(1)
 

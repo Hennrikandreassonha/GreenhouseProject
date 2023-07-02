@@ -103,25 +103,25 @@ while True:
 
             # Sending email at 18.00
             # The email will consist of temps, humid and light at 03, 08 and 18.
-            if hour == 18 and day != previousDay:
+            if hour == 16 and day != previousDay:
 
                 eveningValues = values.copy()
 
                 try:
 
                     send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
-                    send_email("karin.eh@hotmail.se", dayValues, nightValues, eveningValues)
-                    send_email("Richard.jurmo.berg@gmail.com", dayValues, nightValues, eveningValues)
-                    send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
-                    send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
-                    previousDay = day
-                    send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
+                    # send_email("karin.eh@hotmail.se", dayValues, nightValues, eveningValues)
+                    # send_email("Richard.jurmo.berg@gmail.com", dayValues, nightValues, eveningValues)
+                    # send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
+                    # send_email("andreasson6300@gmail.com", tempValue, humidValue, groundmoisture, roundedlight)
+                    # previousDay = day
+                    # send_email("antonandreasson@outlook.com", tempValue, humidValue, groundmoisture, roundedlight)
+
                     previousDay = day
                     
                     print("Success! Mail has been sent")
 
                     previousDay = day
-                    #Email has been sent.
                     
                 except Exception as e:
                     
@@ -132,7 +132,7 @@ while True:
             print(f'Publish humid:{humidValue}')
             print(f'Publish ground moist:{groundmoisture}')
 
-            # send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
+            send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
             # Create a dictionary to represent the JSON payload
             tempPayload = {
                 "temp": tempValue
@@ -176,7 +176,7 @@ while True:
             if lcddisplay1:
                 
                 lcd.move_to(0, 0)
-                lcd.putstr("Fukt jord: {}\n".format(groundmoisture))
+                lcd.putstr("Fukt jord: {}".format(groundmoisture))
                 lcd.move_to(0, 1)
                 lcd.putstr("Ljusstyrka: {}".format(roundedlight))
                 lcddisplay1 = False
@@ -184,7 +184,7 @@ while True:
             else:
 
                 lcd.move_to(0, 0)
-                lcd.putstr("Temperatur: {}{}C".format(tempValue, chr(223)))
+                lcd.putstr("Temperatur: {}C".format(tempValue, chr(223)))
                 lcd.move_to(0, 1)
                 lcd.putstr("Fuktighet:  {}%".format(humidValue))
                 lcddisplay1 = True
