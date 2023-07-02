@@ -1,7 +1,6 @@
 import dht
 from machine import Pin
 import machine
-import _thread
 from lib.umqttsimple import MQTTClient
 from lib.seesaw import Seesaw
 from lib.stemma_soil_sensor import StemmaSoilSensor
@@ -16,7 +15,9 @@ import network
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
 mqtt_username = secrets['mqtt-username']
-mqtt_password = secrets['mqtt-password']
+# mqtt_password = secrets['mqtt-password']
+mqtt_password = 'aio_Xjee69pYL16fxOQBoAJe6c18DPyN'
+
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
@@ -103,7 +104,7 @@ while True:
 
             # Sending email at 18.00
             # The email will consist of temps, humid and light at 03, 08 and 18.
-            if hour == 16 and day != previousDay:
+            if hour == 17 and day != previousDay:
 
                 eveningValues = values.copy()
 
@@ -120,8 +121,6 @@ while True:
                     previousDay = day
                     
                     print("Success! Mail has been sent")
-
-                    previousDay = day
                     
                 except Exception as e:
                     
@@ -132,7 +131,6 @@ while True:
             print(f'Publish humid:{humidValue}')
             print(f'Publish ground moist:{groundmoisture}')
 
-            send_email("henrik1995a@live.se", dayValues, nightValues, eveningValues)
             # Create a dictionary to represent the JSON payload
             tempPayload = {
                 "temp": tempValue

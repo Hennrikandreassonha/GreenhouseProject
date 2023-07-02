@@ -3,11 +3,10 @@ from mysecrets import secrets
 
 # Email details
 sender_email = secrets['sender-email']
-sender_app_password = secrets['sendEmail-password']
+sender_app_password = secrets['google-app-pw']
 email_subject = '🌞Uppdatering från växthus🌞'
 
 # Define the email content with a green background'
-
 
 def email_content(dayvalues, nightvalues, eveningvalues):
     daytemp = dayvalues["temp"]
