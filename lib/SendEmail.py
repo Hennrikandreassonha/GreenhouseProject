@@ -76,6 +76,7 @@ def email_content(dayvalues, nightvalues, eveningvalues):
             <p>Fuktighet luft: <strong>{nighthumid}</strong></p>
             <p>Fuktighet jord: <strong>{nightgroundmoist}%</strong></p>
             <p>Ljusstyrka: <strong>{nightlight}</strong></p>
+            
         </div>
     </div>
 </body>
