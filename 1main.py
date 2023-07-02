@@ -15,8 +15,8 @@ import network
 
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
-mqtt_username = 'Djhonk'
-mqtt_password = 'aio_WXdE48OwLFlJ43ptxmLTDcg2spuW'
+mqtt_username = secrets['mqtt-username']
+mqtt_password = secrets['mqtt-password']
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
@@ -27,8 +27,8 @@ mqtt_client_id = "Djhonkensid"
 mqtt_client = MQTTClient(
     client_id=mqtt_client_id,
     server=mqtt_host,
-    user=secrets['mqtt-username'],
-    password=secrets['mqtt-password'])
+    user=mqtt_username,
+    password=mqtt_password)
 
 mqtt_client.connect()
 
