@@ -15,15 +15,15 @@ import network
 # For the Mqtt protocol.
 mqtt_host = "io.adafruit.com"
 mqtt_username = secrets['mqtt-username']
-# mqtt_password = secrets['mqtt-password']
-mqtt_password = 'aio_Xjee69pYL16fxOQBoAJe6c18DPyN'
+mqtt_password = secrets['mqtt-password']
+# mqtt_password = 'aio_Xjee69pYL16fxOQBoAJe6c18DPyN'
 
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
 mqtt_publish_light = "Djhonk/feeds/Light"
 mqtt_publish_groundmoisture = "Djhonk/feeds/Groundmoisture"
 
-mqtt_client_id = "Djhonkensid"
+mqtt_client_id = secrets['mqtt-password']
 
 mqtt_client = MQTTClient(
     client_id=mqtt_client_id,
@@ -86,8 +86,6 @@ while True:
             currentDate = time.localtime()
             hour = currentDate[3] + 2
             day = currentDate[2]
-
-            # Create an empty dictionary
 
             # Convert the values to integers
             values["temp"] = int(tempValue)
