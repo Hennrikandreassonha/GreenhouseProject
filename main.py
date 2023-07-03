@@ -159,7 +159,7 @@ while True:
 
             print(f'Hour: {hour}')
 
-            if Functions.HourIsPastNine(hour):
+            if Functions.DisplayOff(hour):
                 lcd.backlight_off()
 
             else: 
