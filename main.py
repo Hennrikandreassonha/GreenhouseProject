@@ -16,7 +16,6 @@ import network
 mqtt_host = "io.adafruit.com"
 mqtt_username = secrets['mqtt-username']
 mqtt_password = secrets['mqtt-password']
-# mqtt_password = 'aio_Xjee69pYL16fxOQBoAJe6c18DPyN'
 
 mqtt_publish_temp = "Djhonk/feeds/Temp"
 mqtt_publish_humid = "Djhonk/feeds/Humidity"
@@ -72,7 +71,7 @@ while True:
         while True:
             # Get light value
             lux = lightsensor.get_lux() * 100
-            roundedlight = round(lux, 0)
+            roundedlight = int(lux)
 
             # Get ground moist and temp
             groundmoisture = moistsensor.get_moisture()
@@ -154,12 +153,9 @@ while True:
             mqtt_client.publish(mqtt_publish_groundmoisture, json_groundmoisture)
 
             #If the hour is past 9 backlight will be off.
-
-            from Utilities.Functions import Functions
-
             print(f'Hour: {hour}')
 
-            if Functions.DisplayOff(hour):
+            if hour >= 21 or hour <= 9:
                 lcd.backlight_off()
 
             else: 
